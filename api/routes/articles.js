@@ -79,16 +79,12 @@ router.get("/last", verify, async (req, res) => {
 //GET ALL
 
 router.get("/", verify, async (req, res) => {
-  if (req.user.isAdmin) {
     try {
       const Articles = await Article.find();
       res.status(200).json(Articles.reverse());
     } catch (err) {
       res.status(500).json(err);
     }
-  } else {
-    res.status(403).json("You are not allowed!");
-  }
 });
 
 module.exports = router;

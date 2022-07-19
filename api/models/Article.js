@@ -8,6 +8,7 @@ const ArticleSchema = new mongoose.Schema(
       rate: { type: String },
       views: { type: Number },
       created_by: { type: String },
+      links: { type:Array }
     },
     { timestamps: true }
   );

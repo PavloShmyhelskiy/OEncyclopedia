@@ -7,7 +7,6 @@ const userRoute = require("./routes/users");
 const articleRoute = require("./routes/articles");
 const groupRoute = require("./routes/groups");
 const tagRoute = require("./routes/tags");
-const articleTagsRoute = require("./routes/articletags");
 
 dotenv.config();
 
@@ -29,7 +28,6 @@ app.use("/api/users", userRoute);
 app.use("/api/articles", articleRoute);
 app.use("/api/groups", groupRoute);
 app.use("/api/tags", tagRoute);
-app.use("/api/articletags", articleTagsRoute);
 
 app.listen(8800, () => {
   console.log("Backend server is running!");

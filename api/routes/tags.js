@@ -18,6 +18,28 @@ router.post("/", verify, async (req, res) => {
   }
 });
 
+//UPDATE
+
+router.put("/:id", verify, async (req, res) => {
+  if (req.user.isAdmin) {
+    try {
+      const updatedTag = await Tag.findByIdAndUpdate(
+        req.params.id,
+        {
+          $set: req.body,
+        },
+        { new: true }
+      );
+      res.status(200).json(updatedTag);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  } else {
+    res.status(403).json("You are not allowed!");
+  }
+});
+
+
 //DELETE
 
 router.delete("/:id", verify, async (req, res) => {
@@ -35,11 +57,10 @@ router.delete("/:id", verify, async (req, res) => {
 
 //GET
 
-router.get("/find/:id", async (req, res) => {
+router.get("/find/:id", verify, async (req, res) => {
     try {
       const tag = await Tag.findById(req.params.id);
-      const { name, ...info } = user._doc;
-      res.status(200).json(name);
+      res.status(200).json(tag);
     } catch (err) {
       res.status(500).json(err);
     }

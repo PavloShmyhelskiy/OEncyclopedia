@@ -18,6 +18,27 @@ router.post("/", verify, async (req, res) => {
   }
 });
 
+//UPDATE
+
+router.put("/:id", verify, async (req, res) => {
+  if (req.user.isAdmin) {
+    try {
+      const updatedGroup = await Group.findByIdAndUpdate(
+        req.params.id,
+        {
+          $set: req.body,
+        },
+        { new: true }
+      );
+      res.status(200).json(updatedGroup);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  } else {
+    res.status(403).json("You are not allowed!");
+  }
+});
+
 //DELETE
 
 router.delete("/:id", verify, async (req, res) => {
@@ -34,6 +55,17 @@ router.delete("/:id", verify, async (req, res) => {
 });
 
 //GET
+
+router.get("/find/:id", verify, async (req, res) => {
+  try {
+    const group = await Group.findById(req.params.id);
+    res.status(200).json(group);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//GET ALL
 
 router.get("/", verify, async (req, res) => {
   const nameQuery = req.query.name;

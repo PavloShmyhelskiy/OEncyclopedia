@@ -2,6 +2,7 @@ const router = require("express").Router();
 const User = require("../models/User");
 const CryptoJS = require("crypto-js");
 const verify = require("../verifyToken");
+
 //UPDATE
 
 router.put("/:id", verify, async (req, res) => {
@@ -46,7 +47,7 @@ router.delete("/:id", verify, async (req, res) => {
 
 //GET
 
-router.get("/find/:id", async (req, res) => {
+router.get("/find/:id", verify, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     const { password, ...info } = user._doc;
@@ -71,31 +72,6 @@ router.get("/", verify, async (req, res) => {
   } else {
     res.status(403).json("You are not allowed to see all users!");
   }
-});
-
-//GET USER STATS
-router.get("/stats", async (req, res) => {
-  const today = new Date();
-  const latYear = today.setFullYear(today.setFullYear() - 1);
-
-  try {
-    const data = await User.aggregate([
-      {
-        $project: {
-          month: { $month: "$createdAt" },
-        },
-      },
-      {
-        $group: {
-          _id: "$month",
-          total: { $sum: 1 },
-        },
-      },
-    ]);
-    res.status(200).json(data)
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+})
 
 module.exports = router;
