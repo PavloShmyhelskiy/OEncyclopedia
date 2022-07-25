@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "downlevelIteration": true,
+    "importsNotUsedAsValues": "error",
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "baseUrl": "src",
+    "paths": {
+      "@assets/*": ["../public/assets/*"],
+      "@config/*": ["config/*"],
+      "@uikit/*": ["uikit/*"],
+      "@tools/*": ["common/tools/*"],
+      "@constants/*": ["common/constants/*"],
+      "@models/*": ["common/models/*"],
+      "@mocks/*": ["common/mocks/*"],
+      "@mocks": ["common/mocks/index.ts"],
+      "@api": ["common/api/index.ts"],
+      "@hooks": ["common/hooks/index.ts"],
+      "@hooks/*": ["common/hooks/*"],
+      "@api/*": ["common/api/*"],
+      "@pages/*": ["pages/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}

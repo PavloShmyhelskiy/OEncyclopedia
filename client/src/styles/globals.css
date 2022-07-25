@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'PTSerif';
+  src: url('/assets/fonts/PTSerif/PTSerif-Regular.ttf');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PTSerif';
+  src: url('/assets/fonts/PTSerif/PTSerif-Italic.ttf');
+  font-style: medium;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PTSerif';
+  src: url('/assets/fonts/PTSerif/PTSerif-BoldItalic.ttf');
+  font-style: medium;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PTSerif';
+  src: url('/assets/fonts/PTSerif/PTSerif-Bold.ttf');
+  font-style: medium;
+  font-weight: 700;
+  font-display: swap;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+*>.logo-hover,
+*:hover>.logo-unhover,
+*:focus>.logo-unhover {
+  display: none;
+}
+
+*:focus>.logo-hover,
+*:hover>.logo-hover {
+  display: inline-block;
+}
