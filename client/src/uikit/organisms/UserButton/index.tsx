@@ -26,10 +26,10 @@ const UserButton = ({ name, onLogin, onLogout }: UserButtonProps) => {
         </div>
       </Popover.Button>
 
-      <Popover.Panel className="absolute z-10 bg-gray-300 mt-5 rounded-md">
-        <div className="grid grid-cols-2">
+      <Popover.Panel className="absolute z-10 bg-gray-300 mt-5 rounded-md hover:cursor-pointer">
+        <div className="grid grid-cols-2" onClick={onLogout}>
           <div className=" p-3">
-            <a>Вихід</a>
+            <a >Вихід</a>
           </div>
         </div>
       </Popover.Panel>

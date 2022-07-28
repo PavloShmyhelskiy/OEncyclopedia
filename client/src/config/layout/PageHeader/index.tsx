@@ -1,3 +1,4 @@
+import { useAuth } from '@api/resources/login/AuthContex'
 import { LogoIcon, LogoUaIcon } from '@assets/icons'
 import { classnames } from '@tools/common'
 import { UserButton } from '@uikit/organisms'
@@ -12,18 +13,28 @@ const PageHeader = ({}: PageHeaderProps) => {
   const router = useRouter()
 
   const { setModal } = useModals()
+  const { user, setUser } = useAuth()
 
   const onLogin = () => {
     console.log('fdsfsdf')
     setModal({
       name: 'login',
       props: {
-        onClose: () => {},
-        onSuccess: () => {},
+        onClose: () => {
+          console.log("on close");
+        },
+        onSuccess: () => {
+          setModal(null);
+
+          console.log("user success", user)
+          console.log("on success");
+        },
       },
     })
   }
 
+  console.log("user", user)
+  
   return (
     <nav className="bg-white py-2 md:py-4 border-b border-b-gray-100">
       <div className="container px-4 mx-auto md:flex md:items-center">
@@ -60,7 +71,18 @@ const PageHeader = ({}: PageHeaderProps) => {
             </Link>
           ))}
 
-          <UserButton name="User" onLogout={() => {}} onLogin={onLogin} />
+          <UserButton name={ user?.username } 
+            onLogout={() => {
+              setUser?.({
+                  isAdmin: false,
+                  username: "", 
+                  email: "", 
+                  accessToken: "",
+                })
+              console.log("logout")
+            }} 
+            onLogin={ user?.accessToken === "" ? onLogin : undefined } 
+          />
         </div>
       </div>
     </nav>
