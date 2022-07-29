@@ -26,7 +26,7 @@ const Error = ({ error, width }: { error?: string; width?: number }) => {
   return (
     <p
       style={{ maxWidth: width }}
-      className="absolute text-xs font-medium text-red"
+      className="absolute text-xs font-medium text-red-600"
     >
       {error}
     </p>

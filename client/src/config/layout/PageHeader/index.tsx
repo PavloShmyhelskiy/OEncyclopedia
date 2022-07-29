@@ -16,18 +16,12 @@ const PageHeader = ({}: PageHeaderProps) => {
   const { user, setUser } = useAuth()
 
   const onLogin = () => {
-    console.log('fdsfsdf')
     setModal({
       name: 'login',
       props: {
         onClose: () => {
-          console.log("on close");
         },
         onSuccess: () => {
-          setModal(null);
-
-          console.log("user success", user)
-          console.log("on success");
         },
       },
     })

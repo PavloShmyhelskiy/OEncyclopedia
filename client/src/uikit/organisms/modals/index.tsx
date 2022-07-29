@@ -1,9 +1,10 @@
 import type { WithOptional } from '@tools/common'
 import { createContext, FC, ReactNode, useContext, useState } from 'react'
 import LoginModal, { LoginModalProps } from './LoginModal'
+import RegistrationModal from './RegistrationModal'
 
 export type Modal = {
-  name: 'login'
+  name: 'login' | 'registration'
   props: WithOptional<LoginModalProps, 'onClose'>
 }
 
@@ -67,6 +68,15 @@ const Modals = () => {
   if (modal.name === 'login') {
     return (
       <LoginModal
+        {...modal.props}
+        onSuccess={onSuccess}
+        onClose={onClose}
+        visible
+      />
+    )
+  } else if (modal.name === 'registration') {
+    return (
+      <RegistrationModal
         {...modal.props}
         onSuccess={onSuccess}
         onClose={onClose}

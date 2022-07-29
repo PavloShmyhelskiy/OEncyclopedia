@@ -1,17 +1,18 @@
 import httpClient from "@api/httpClient";
-import type { Login } from "@uikit/organisms/modals/LoginModal";
+import type { FullUserData } from "@uikit/organisms/modals/LoginModal";
 
 
 export interface userData { 
   email: string; 
-  password: string 
+  password: string;
+  username?: string;
 }
 
 export class NetworkError extends Error { }
 
 export const getUserData = async (data : userData) => {
   try { 
-    const { data: userData } = await httpClient.post< Login >("http://localhost:8800/api/auth/login", 
+    const { data: userData } = await httpClient.post< FullUserData >("http://localhost:8800/api/auth/login", 
                   { 
                     email: data.email, 
                     password: data.password 
@@ -25,26 +26,19 @@ export const getUserData = async (data : userData) => {
   }
 }
 
-
-// export const getUserDataQuery = async (data : Object) => {
-//   console.log("sad", data)
-  
-//   try {
-//     const userData = queryClient.fetchQuery("ds", getUserData, {
-//       staleTime: Number.POSITIVE_INFINITY,
-//     })
-//     console.log("getUserDataQuery:", userData)
-
-//   } catch (e) { 
-//     console.log(e)
-//   }
-// }
-
-
-    // useQuery<Login, AxiosError>([ data ], async () => {
-    //   const { data } = await httpClient.get< Login >("/api/auth/login");
-    //   return data;
-    // }, 
-    // {
-    //   staleTime: Number.POSITIVE_INFINITY,
-    // });
+export const registerUser = async (data : userData) => {
+  try { 
+    const { data: userData } = await httpClient.post< FullUserData >("http://localhost:8800/api/auth/register", 
+                  { 
+                    email: data.email, 
+                    password: data.password,
+                    username: data.username,
+                  });
+    return userData;
+    
+  } catch (e : any) {
+    console.log("reg error", e)
+    if (e.response.status === 500) throw e;
+    if (e.message === "Network Error") throw new NetworkError("Network Error");
+  }
+}

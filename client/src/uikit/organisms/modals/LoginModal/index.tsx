@@ -4,11 +4,14 @@ import { Input } from '@uikit/molecules'
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
+import { useModals } from '..'
 import { BaseModal, BaseModalProps } from '../components'
 
-export interface LoginModalProps extends BaseModalProps {}
+export interface LoginModalProps extends BaseModalProps {
+  emailValue?: string
+}
 
-export interface Login {
+export interface FullUserData {
   isAdmin: boolean;
   _id?: string;
   username: string; 
@@ -24,14 +27,21 @@ const LoginModal = ({
   visible,
   onClose,
   onSuccess,
+  emailValue,
 }: LoginModalProps ) => {
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit, setValue } = useForm();
   const { setUser } = useAuth();
+  const { setModal } = useModals();
+  // const router = useRouter();
+
+  setValue("email", emailValue)
   
-  const { data, mutate, isError, error } = useMutation(getUserData, { onSuccess: (data) => {
-    
+  const { data, mutate, isError, error, isLoading } = useMutation(getUserData, { onSuccess: (data) => {
+
+    // if (data?.isAdmin) router.push("http://localhost:5521");
+
     localStorage.setItem("user", JSON.stringify(data))
-    setUser && setUser(data as Login)
+    setUser && setUser(data as FullUserData)
     onSuccess && onSuccess()
   } })
 
@@ -39,9 +49,20 @@ const LoginModal = ({
     e?.preventDefault();
     
     mutate(loginData as userData);
-      // const accessToken = await getUserData(loginData);
 
     console.log("accessToken:", data)
+  }
+
+  const onRegistration = () => {
+    setModal({
+      name: 'registration',
+      props: {
+        onClose: () => {
+        },
+        onSuccess: () => {
+        },
+      },
+    })
   }
 
   return (
@@ -79,13 +100,22 @@ const LoginModal = ({
             name="password"
             type="password"
             control={control}
+            required
             className="w-full overflow-hidden rounded-xsmall"
             inputClassName="rounded-xsmall overflow-hidden my-3 py-1"
           />
 
-          <button className="w-full bg-slate-700 text-white py-4 mt-5" >
+          <button className="w-full bg-slate-700 text-white py-4 mt-5 hover:bg-slate-600 transition-colors duration-300" 
+            disabled={ isLoading }
+          >
             Авторизуватися
           </button>
+
+          <div className="w-full text-center bg-yellow-300 text-slate-800 py-4 mt-5 hover:cursor-pointer hover:bg-yellow-400 transition-colors duration-300" 
+            onClick={ onRegistration }
+          >
+            Реєстрація
+          </div>
         </form>
       </div>
     </BaseModal>

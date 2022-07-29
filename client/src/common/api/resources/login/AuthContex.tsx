@@ -1,12 +1,12 @@
-import type { Login } from "@uikit/organisms/modals/LoginModal";
+import type { FullUserData } from "@uikit/organisms/modals/LoginModal";
 import { createContext, Dispatch, FC, ReactNode, SetStateAction, useContext, useEffect, useState } from "react";
 
 
 if (typeof window !== 'undefined') {
-  var defaultValue: Login = JSON.parse(localStorage.getItem("user") || '{ "accessToken": "" }')
+  var defaultValue: any = JSON.parse(localStorage.getItem("user") || '{ "accessToken": "" }')
 }
 
-export const AuthContext = createContext< {user: Login, setUser: Dispatch<SetStateAction<Login>> | null} >(
+export const AuthContext = createContext< {user: FullUserData, setUser: Dispatch<SetStateAction<FullUserData>> | null} >(
   {
     user: defaultValue, 
     setUser: null
@@ -18,6 +18,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({
   const [user, setUser] = useState(defaultValue);
   
   useEffect(() => {
+    console.log("effect")
     localStorage.setItem("user", JSON.stringify(user));
   }, [user] )
 
