@@ -1,5 +1,5 @@
 import { useAuth } from '@api/resources/login/AuthContex'
-import { getUserData, userData } from '@api/resources/login/login'
+import { getUserData, NetworkError, userData } from '@api/resources/login/login'
 import { Input } from '@uikit/molecules'
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -28,7 +28,7 @@ const LoginModal = ({
   const { control, handleSubmit } = useForm();
   const { setUser } = useAuth();
   
-  const { data, mutate, isError } = useMutation(getUserData, { onSuccess: (data) => {
+  const { data, mutate, isError, error } = useMutation(getUserData, { onSuccess: (data) => {
     
     localStorage.setItem("user", JSON.stringify(data))
     setUser && setUser(data as Login)
@@ -57,7 +57,9 @@ const LoginModal = ({
           Авторизація
         </h3>
 
-        {isError && <p className="mb-10 text-center text-xl text-red-600">{ "Неправильний пароль чи електронна пошта" }</p> }
+        {isError && error instanceof NetworkError 
+          ? <p className="mb-10 text-center text-xl text-red-600">{ error.message }</p> 
+          : isError && <p className="mb-10 text-center text-xl text-red-600">{ "Неправильний пароль чи електронна пошта" }</p> }
 
         <form id="login-form" 
           onSubmit={handleSubmit(onSubmit)}
