@@ -3,10 +3,29 @@ import type { Article } from '@models/articles'
 import { articlesUrls } from './constants'
 
 const getArticles = async () => {
-  const { data } = await httpClient.get<{ articles: Article[] }>(
-    articlesUrls.root,
-  )
-  return data.articles
+  const { data } = await httpClient.get<Article[]>(articlesUrls.root)
+  return data
 }
 
-export default { getArticles }
+const updateViews = async (articleId: string) => {
+  const { data } = await httpClient.put<Article>(
+    articlesUrls.updateView(articleId),
+  )
+  return data
+}
+
+const updateRate = async ({
+  articleId,
+  rate,
+}: {
+  articleId: string
+  rate: number
+}) => {
+  const { data } = await httpClient.put<Article>(
+    articlesUrls.updateRate(articleId),
+    { rate },
+  )
+  return data
+}
+
+export default { getArticles, updateViews, updateRate }

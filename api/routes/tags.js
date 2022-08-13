@@ -67,7 +67,7 @@ router.get("/find/:id", verify, async (req, res) => {
   });
   
   //GET ALL
-  router.get("/", verify, async (req, res) => {
+  router.get("/", async (req, res) => {
     let tags = [];
       try {
           tags = await Tag.find();

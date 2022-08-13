@@ -1,5 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
+import applyAuth from './interceptors/auth'
 
 const httpClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -8,5 +9,7 @@ const httpClient = axios.create({
     CORS: '*',
   },
 })
+
+applyAuth(httpClient)
 
 export default httpClient
