@@ -99,7 +99,7 @@ const ArticlesPage = ({}: ArticlesPageProps) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-4 my-5">
+        <div className="grid xl:grid-cols-3 gap-4 md:grid-cols-2 ">
           {articles.map(article => (
             <ArticleCard key={article._id} article={article} />
           ))}

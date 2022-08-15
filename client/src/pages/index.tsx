@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form'
 const Home: NextPage = () => {
   const articlesQuery = useArticles()
 
-  const { control, handleSubmit } = useForm<{ search: string }>()
+  const { control, handleSubmit, getValues } = useForm<{ search: string }>()
 
   const [articles, setArticles] = useState<Article[]>([])
   const [containsInArticles, setContainsInArticles] = useState<Article[]>([])
@@ -57,7 +57,7 @@ const Home: NextPage = () => {
             <input
               type="submit"
               value="Пошук"
-              className={classnames("lg:ml-5 lg:my-0 bg-slate-700 px-10 text-white font-bold", 
+              className={classnames("lg:ml-5 lg:w-[200px] lg:my-0 bg-slate-700 px-10 text-white font-bold", 
                 "sm:w-[100%] sm:ml-0 sm:py-4 sm:my-2")}
               onClick={onSubmit}
             />
@@ -66,7 +66,7 @@ const Home: NextPage = () => {
 
         <hr className="h-[2px] bg-slate-100 my-10" />
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid xl:grid-cols-3 gap-4 md:grid-cols-2">
           {articles.length
             ? articles.map(article => <ArticleCard article={article} />)
             : articlesQuery.data?.map(article => (
@@ -78,7 +78,7 @@ const Home: NextPage = () => {
         { containsInArticles.length > 0 && 
           <>
             <hr className="mt-4" />
-            <div>Містять</div>
+            <div>Містять: <div className="font-bold"> {" " + getValues().search }</div> </div>
             
             <div className="grid grid-cols-3 gap-4">
               {containsInArticles.map(article => <ArticleCard article={article} />)}
