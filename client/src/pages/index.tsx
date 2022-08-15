@@ -32,7 +32,7 @@ const Home: NextPage = () => {
     )
 
     const content = articlesQuery.data?.filter(a => 
-        a.content.toLocaleLowerCase().includes(data.search.toLocaleLowerCase())
+        new RegExp( '\\b' + data.search + '\\b' , 'i').test(a.content)
     )
 
     setArticles(artTitleStartWith?.concat(artTitleContains ?? []) ?? [])
@@ -80,8 +80,8 @@ const Home: NextPage = () => {
             <hr className="mt-4" />
             <div>Містять: <div className="font-bold"> {" " + getValues().search }</div> </div>
             
-            <div className="grid grid-cols-3 gap-4">
-              {containsInArticles.map(article => <ArticleCard article={article} />)}
+            <div className="grid xl:grid-cols-3 gap-4 md:grid-cols-2">
+              {containsInArticles.map(article => <ArticleCard article={article} highlightedText={getValues().search} />)}
             </div>
           </>
         }
