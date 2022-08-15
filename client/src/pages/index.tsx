@@ -1,4 +1,5 @@
 import { useArticles } from '@api'
+import { classnames } from '@tools/common'
 import type { Article } from '@models/articles'
 import { Input } from '@uikit/molecules'
 import { ArticleCard, Metadata } from '@uikit/organisms'
@@ -12,18 +13,30 @@ const Home: NextPage = () => {
   const { control, handleSubmit } = useForm<{ search: string }>()
 
   const [articles, setArticles] = useState<Article[]>([])
+  const [containsInArticles, setContainsInArticles] = useState<Article[]>([])
 
   const onSubmit = handleSubmit(data => {
     if (data.search === '') {
       setArticles([])
+      setContainsInArticles([])
       return
     }
 
-    const art = articlesQuery.data?.filter(a =>
-      a.title.toLocaleLowerCase().startsWith(data.search.toLocaleLowerCase()),
+    const artTitleStartWith = articlesQuery.data?.filter(a => 
+      a.title.toLocaleLowerCase().startsWith(data.search.toLocaleLowerCase())
     )
 
-    setArticles(art ?? [])
+    const artTitleContains = articlesQuery.data?.filter(a => 
+      a.title.toLocaleLowerCase().includes(data.search.toLocaleLowerCase())
+      && !a.title.toLocaleLowerCase().startsWith(data.search.toLocaleLowerCase())
+    )
+
+    const content = articlesQuery.data?.filter(a => 
+        a.content.toLocaleLowerCase().includes(data.search.toLocaleLowerCase())
+    )
+
+    setArticles(artTitleStartWith?.concat(artTitleContains ?? []) ?? [])
+    setContainsInArticles(content ?? [])
   })
 
   return (
@@ -38,13 +51,14 @@ const Home: NextPage = () => {
 
           <form
             onSubmit={onSubmit}
-            className="flex flex-row mx-20 justify-center"
+            className="lg:flex lg:flex-row lg:mx-20 lg:justify-center sm:block"
           >
-            <Input name="search" control={control} className="w-[500px]" />
+            <Input name="search" control={control} className="lg:w-[500px] sm:w-[100%]" />
             <input
               type="submit"
               value="Пошук"
-              className="ml-5 bg-slate-700 px-10 text-white font-bold"
+              className={classnames("lg:ml-5 lg:my-0 bg-slate-700 px-10 text-white font-bold", 
+                "sm:w-[100%] sm:ml-0 sm:py-4 sm:my-2")}
               onClick={onSubmit}
             />
           </form>
@@ -60,6 +74,17 @@ const Home: NextPage = () => {
               ))}
         </div>
 
+        
+        { containsInArticles.length > 0 && 
+          <>
+            <hr className="mt-4" />
+            <div>Містять</div>
+            
+            <div className="grid grid-cols-3 gap-4">
+              {containsInArticles.map(article => <ArticleCard article={article} />)}
+            </div>
+          </>
+        }
         <hr className="h-[2px] bg-slate-100 my-10" />
       </div>
     </>
